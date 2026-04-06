@@ -1,14 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TypeQuest — Juego de Mecanografía</title>
-  <link rel="stylesheet" href="../style/index.css" />
-  <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Type Quest – Inicio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../style/index.css"/>
 </head>
 <body>
-  <div id="game-container"></div>
+
+  <div class="stars" id="stars"></div>
+
+  <div class="panel">
+    <h1 class="title">TYPE&nbsp;&nbsp;QUEST</h1>
+    <p class="subtitle">— Juego de Mecanografía —</p>
+
+    <div class="figure-wrap">
+      <svg width="72" height="90" viewBox="0 0 72 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="36" cy="14" r="11" stroke="#22dd66" stroke-width="2.5" fill="none"/>
+        <line x1="36" y1="25" x2="36" y2="58" stroke="#22dd66" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="36" y1="35" x2="14" y2="50" stroke="#22dd66" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="36" y1="35" x2="58" y2="50" stroke="#22dd66" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="36" y1="58" x2="18" y2="84" stroke="#22dd66" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="36" y1="58" x2="54" y2="84" stroke="#22dd66" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <p class="description">
+      Entrena tu velocidad y precisión<br/>
+      al escribir. <span>Superate por niveles</span> y<br/>
+      ¡demuestra tus habilidades!
+    </p>
+
+    <a href="index1.html" class="btn-start">
+      <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      <span class="btn-label">Iniciar Juego</span>
+    </a>
+
+    <p class="hint">O presiona <kbd>ENTER</kbd> para comenzar</p>
+  </div>
+
   <script src="../js/index.js"></script>
 </body>
 </html>
