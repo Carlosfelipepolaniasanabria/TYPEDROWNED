@@ -1,0 +1,262 @@
+/* ===================================================
+   register.css — Estilos de la pantalla de registro
+   Diseño: Mismo sistema que login.css pero con acento verde (#22dd66)
+   para diferenciar visualmente el flujo de registro del de login
+=================================================== */
+
+/* ── Importar base compartida con login ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0a0a1a;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  color: #c8d8e8;
+}
+
+/* ── Fondo de estrellas ── */
+.stars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffffff;
+  animation: twinkle linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.4); }
+}
+
+/* ── Contenedor principal ── */
+.register-wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Panel con acento verde (diferencia visual del login) ── */
+.register-panel {
+  background: rgba(10, 20, 13, 0.95);
+  border: 2px solid #22dd66;
+  border-radius: 18px;
+  padding: 40px 52px 36px;
+  width: 420px;
+  max-width: 95vw;
+  box-shadow:
+    0 0 30px rgba(34, 221, 102, 0.13),
+    inset 0 0 40px rgba(34, 221, 102, 0.04);
+  animation: panelIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(28px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+/* ── Logo ── */
+.register-logo {
+  font-family: 'VT323', monospace;
+  font-size: 42px;
+  color: #22dd66;
+  text-align: center;
+  letter-spacing: 6px;
+  text-shadow:
+    0 0 18px rgba(34, 221, 102, 0.7),
+    0 0 40px rgba(34, 221, 102, 0.3);
+  margin-bottom: 4px;
+  animation: blink 2.8s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.75; }
+}
+
+/* ── Subtítulo ── */
+.register-subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: #2a5a3a;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+/* ── Figura muñeco ── */
+.figure-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+/* ── Línea separadora verde ── */
+.neon-line {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #22dd6655, transparent);
+  margin: 0 0 24px;
+}
+
+/* ── Grupo de campo ── */
+.field-group {
+  margin-bottom: 15px;
+}
+
+/* Etiqueta */
+.field-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #2a5a3a;
+  margin-bottom: 6px;
+}
+
+/* Input */
+.field-input {
+  width: 100%;
+  background: rgba(0, 10, 4, 0.5);
+  border: 1.5px solid #1a3a2a;
+  border-radius: 8px;
+  padding: 11px 16px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 15px;
+  color: #d0f0e0;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  letter-spacing: 1px;
+}
+
+.field-input:focus {
+  border-color: #22dd66;
+  box-shadow: 0 0 12px rgba(34, 221, 102, 0.2);
+}
+
+.field-input::placeholder {
+  color: #1a3a2a;
+}
+
+/* ── Indicador de fuerza de contraseña ── */
+.strength-bar-wrap {
+  margin-top: 7px;
+  display: flex;
+  gap: 5px;
+}
+
+.strength-seg {
+  height: 3px;
+  flex: 1;
+  border-radius: 2px;
+  background: #1a3a2a;
+  transition: background 0.3s;
+}
+
+.strength-seg.active-1 { background: #ff4444; }
+.strength-seg.active-2 { background: #ffaa00; }
+.strength-seg.active-3 { background: #22dd66; }
+.strength-seg.active-4 { background: #00f5ff; }
+
+.strength-label {
+  font-size: 10px;
+  color: #2a5a3a;
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+/* ── Caja de mensaje ── */
+.msg-box {
+  font-size: 12px;
+  padding: 9px 14px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  text-align: center;
+  display: none;
+  letter-spacing: 0.5px;
+}
+
+.msg-box.error {
+  background: rgba(255, 60, 60, 0.12);
+  border: 1px solid #ff3c3c55;
+  color: #ff7777;
+  display: block;
+}
+
+.msg-box.success {
+  background: rgba(34, 221, 102, 0.10);
+  border: 1px solid #22dd6655;
+  color: #22dd66;
+  display: block;
+}
+
+/* ── Botón principal verde ── */
+.btn-primary {
+  width: 100%;
+  background: transparent;
+  border: 2px solid #22dd66;
+  border-radius: 10px;
+  padding: 13px;
+  font-family: 'VT323', monospace;
+  font-size: 22px;
+  letter-spacing: 3px;
+  color: #22dd66;
+  cursor: pointer;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(34, 221, 102, 0.6);
+  box-shadow: 0 0 16px rgba(34, 221, 102, 0.1);
+  transition: background 0.2s, box-shadow 0.2s;
+  margin-bottom: 16px;
+}
+
+.btn-primary:hover {
+  background: rgba(34, 221, 102, 0.10);
+  box-shadow: 0 0 28px rgba(34, 221, 102, 0.3);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* ── Enlace de volver al login ── */
+.link-row {
+  text-align: center;
+  font-size: 12px;
+  color: #2a5a3a;
+  letter-spacing: 0.5px;
+}
+
+.link-row a {
+  color: #22dd66;
+  text-decoration: none;
+  transition: text-shadow 0.2s;
+}
+
+.link-row a:hover {
+  text-shadow: 0 0 10px rgba(34, 221, 102, 0.7);
+}
+
+/* ── Pie de página ── */
+.register-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 11px;
+  color: #1a3a2a;
+  letter-spacing: 1px;
+}
