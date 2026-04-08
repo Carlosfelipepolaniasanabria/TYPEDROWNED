@@ -6,9 +6,160 @@
   <title>TypeQuest — Juego de Mecanografía</title>
   <link rel="stylesheet" href="../style/index1.css" />
   <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+
+  <style>
+    /*
+      HUD de usuario superpuesto al canvas de Phaser
+      Se muestra en la esquina superior derecha
+      No interfiere con el juego
+    */
+
+    /* Barra de usuario en la parte superior */
+    #user-hud {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 8px 16px;
+      background: rgba(10, 10, 26, 0.85);
+      border-bottom: 1px solid rgba(0, 245, 255, 0.15);
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      pointer-events: none; /* No bloquear clics al juego por defecto */
+    }
+
+    /* Nombre del usuario o "INVITADO" */
+    #user-label {
+      color: #00f5ff;
+      letter-spacing: 1px;
+      font-size: 12px;
+    }
+
+    /* Botones del HUD: login, registro, cerrar sesión */
+    .hud-btn {
+      pointer-events: all; /* Estos sí deben recibir clics */
+      background: transparent;
+      border: 1px solid #00f5ff44;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      color: #00f5ff;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .hud-btn:hover {
+      background: rgba(0, 245, 255, 0.12);
+      border-color: #00f5ff;
+    }
+
+    /* Botón de cerrar sesión con color diferente */
+    .hud-btn.logout {
+      border-color: #ff444444;
+      color: #ff8888;
+    }
+
+    .hud-btn.logout:hover {
+      background: rgba(255, 68, 68, 0.1);
+      border-color: #ff4444;
+    }
+
+    /* Separador decorativo entre botones */
+    .hud-sep {
+      color: #1a2a4a;
+    }
+
+    /*
+      Ajustar el contenedor del juego para que no tape el HUD
+      El HUD tiene ~33px de altura, así que bajamos el canvas un poco
+    */
+    #game-container {
+      padding-top: 33px;
+    }
+  </style>
 </head>
 <body>
+
+  <!--
+    HUD de usuario
+    Se construye dinámicamente según si hay sesión activa o no.
+    - Usuario logueado: muestra nombre + botón "Cerrar Sesión"
+    - Invitado: muestra "INVITADO" + botones "Iniciar Sesión" y "Registrarse"
+  -->
+  <div id="user-hud">
+    <!-- Se llenará con JavaScript según el estado de sesión -->
+  </div>
+
+  <!-- Contenedor del juego Phaser -->
   <div id="game-container"></div>
+
+  <!--
+    auth.js debe cargarse ANTES del script del juego
+    para que getCurrentUser() y logoutUser() estén disponibles
+  -->
+  <script src="../js/auth.js"></script>
+
+  <script>
+    // ===================================================
+    //  HUD de usuario para index1.html
+    //  Lee el estado de sesión de auth.js y construye
+    //  la barra de usuario de forma dinámica
+    // ===================================================
+
+    /**
+     * Construye y muestra el HUD según el estado de sesión actual
+     */
+    function buildUserHUD() {
+      const hud  = document.getElementById('user-hud');
+      const user = getCurrentUser(); // Función de auth.js
+
+      if (user) {
+        // ── Usuario logueado: mostrar nombre y opción de cerrar sesión ──
+        hud.innerHTML = `
+          <span id="user-label">👤 ${user.username}</span>
+          <span class="hud-sep">|</span>
+          <button class="hud-btn logout" id="btn-logout">Cerrar Sesión</button>
+        `;
+
+        // Cerrar sesión al hacer clic
+        document.getElementById('btn-logout').addEventListener('click', function () {
+          logoutUser(); // Función de auth.js: elimina la sesión de localStorage
+          // Redirigir al login tras cerrar sesión
+          window.location.href = 'login.html';
+        });
+
+      } else {
+        // ── Sin sesión: mostrar "INVITADO" y botones de acceso ──
+        // El invitado puede jugar pero su progreso se borra al recargar
+        hud.innerHTML = `
+          <span id="user-label">👾 INVITADO</span>
+          <span class="hud-sep">|</span>
+          <button class="hud-btn" id="btn-login-hud">Iniciar Sesión</button>
+          <button class="hud-btn" id="btn-register-hud">Registrarse</button>
+        `;
+
+        document.getElementById('btn-login-hud').addEventListener('click', function () {
+          window.location.href = 'login.html';
+        });
+
+        document.getElementById('btn-register-hud').addEventListener('click', function () {
+          window.location.href = 'register.html';
+        });
+      }
+    }
+
+    // Construir el HUD al cargar la página
+    buildUserHUD();
+  </script>
+
+  <!-- Script principal del menú Phaser (no modificado) -->
   <script src="../js/index1.js"></script>
 </body>
 </html>

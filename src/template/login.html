@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Type Quest — Iniciar Sesión</title>
+  <!-- Fuentes coherentes con el juego principal -->
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../style/login.css"/>
+</head>
+<body>
+
+  <!-- ── Fondo estrellado (igual que index.html) ── -->
+  <div class="stars" id="stars"></div>
+
+  <!-- ── Contenedor centrado ── -->
+  <div class="login-wrap">
+    <div class="login-panel">
+
+      <!-- Logo del juego -->
+      <div class="login-logo">TYPE QUEST</div>
+      <p class="login-subtitle">— Iniciar Sesión —</p>
+
+      <!-- Muñeco decorativo (mismo SVG que index.html) -->
+      <div class="figure-wrap">
+        <svg width="52" height="66" viewBox="0 0 72 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="36" cy="14" r="11" stroke="#00f5ff" stroke-width="2.5" fill="none"/>
+          <line x1="36" y1="25" x2="36" y2="58" stroke="#00f5ff" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="36" y1="35" x2="14" y2="50" stroke="#00f5ff" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="36" y1="35" x2="58" y2="50" stroke="#00f5ff" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="36" y1="58" x2="18" y2="84" stroke="#00f5ff" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="36" y1="58" x2="54" y2="84" stroke="#00f5ff" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <hr class="neon-line"/>
+
+      <!-- ── Caja de mensajes de error o éxito ── -->
+      <!-- Se muestra/oculta dinámicamente con JS -->
+      <div class="msg-box" id="msg-box"></div>
+
+      <!-- ── Campo: nombre de usuario ── -->
+      <div class="field-group">
+        <label class="field-label" for="username">Usuario</label>
+        <input
+          class="field-input"
+          type="text"
+          id="username"
+          placeholder="tu_nombre"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="none"
+          spellcheck="false"
+        />
+      </div>
+
+      <!-- ── Campo: contraseña ── -->
+      <div class="field-group">
+        <label class="field-label" for="password">Contraseña</label>
+        <input
+          class="field-input"
+          type="password"
+          id="password"
+          placeholder="••••••"
+        />
+      </div>
+
+      <!-- ── Botón principal: iniciar sesión ── -->
+      <button class="btn-primary" id="btn-login">▶ Iniciar Sesión</button>
+
+      <!-- ── Botón secundario: continuar como invitado ── -->
+      <!-- El invitado puede jugar pero NO guarda progreso permanente -->
+      <button class="btn-guest" id="btn-guest">Continuar como Invitado (sin guardar progreso)</button>
+
+      <!-- ── Enlace a pantalla de registro ── -->
+      <p class="link-row">
+        ¿No tienes cuenta? <a href="register.html">Regístrate aquí</a>
+      </p>
+
+      <p class="login-footer">TypeQuest v1.0 · Solo navegador · Sin servidor</p>
+    </div>
+  </div>
+
+  <!-- ── Módulo de autenticación ── -->
+  <script src="../js/auth.js"></script>
+
+  <script>
+    // ===================================================
+    //  Lógica de login.html
+    //  - Genera estrellas de fondo
+    //  - Maneja el formulario de inicio de sesión
+    //  - Redirige al juego tras login exitoso
+    //  - Permite continuar como invitado
+    // ===================================================
+
+    // ── Generar estrellas de fondo (igual que index.js) ──
+    (function generateStars() {
+      const container = document.getElementById('stars');
+      for (let i = 0; i < 160; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        const size = Math.random() * 2.2 + 0.6;
+        s.style.cssText = `
+          width: ${size}px;
+          height: ${size}px;
+          top: ${Math.random() * 100}%;
+          left: ${Math.random() * 100}%;
+          animation-duration: ${2 + Math.random() * 4}s;
+          animation-delay: ${Math.random() * 5}s;
+        `;
+        container.appendChild(s);
+      }
+    })();
+
+    // ── Referencias a elementos del DOM ──
+    const msgBox   = document.getElementById('msg-box');
+    const btnLogin = document.getElementById('btn-login');
+    const btnGuest = document.getElementById('btn-guest');
+
+    /**
+     * Muestra un mensaje en la caja de feedback
+     * @param {string} text    - Texto a mostrar
+     * @param {'error'|'success'} type - Tipo de mensaje
+     */
+    function showMsg(text, type) {
+      msgBox.textContent = text;
+      msgBox.className = 'msg-box ' + type;
+    }
+
+    /**
+     * Limpia la caja de mensajes
+     */
+    function clearMsg() {
+      msgBox.className = 'msg-box';
+      msgBox.textContent = '';
+    }
+
+    // ── Manejar clic en "Iniciar Sesión" ──
+    btnLogin.addEventListener('click', function () {
+      clearMsg();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      // Llamar a la función de auth.js para validar credenciales
+      const result = loginUser(username, password);
+
+      if (result.success) {
+        // Login exitoso: mostrar mensaje y redirigir al menú del juego
+        showMsg(result.message, 'success');
+        setTimeout(function () {
+          window.location.href = 'index1.html'; // Redirige al menú Phaser
+        }, 800);
+      } else {
+        // Error: mostrar mensaje de fallo
+        showMsg(result.message, 'error');
+      }
+    });
+
+    // ── Manejar "Continuar como Invitado" ──
+    // El invitado NO tiene cuenta, su progreso se borra al recargar
+    btnGuest.addEventListener('click', function () {
+      // Asegurarse de que no haya sesión activa (por si quedó algo)
+      logoutUser();
+      // Ir directo al juego sin login
+      window.location.href = 'index1.html';
+    });
+
+    // ── Atajo de teclado: ENTER envía el formulario ──
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') btnLogin.click();
+    });
+
+    // ── Si ya hay un usuario logueado, redirigir directamente ──
+    // Esto evita que un usuario ya logueado vuelva a ver el login
+    if (isLoggedIn()) {
+      window.location.href = 'index1.html';
+    }
+  </script>
+</body>
+</html>
