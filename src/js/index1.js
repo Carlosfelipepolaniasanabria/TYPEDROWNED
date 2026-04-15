@@ -40,7 +40,7 @@ var MenuScene = new Phaser.Class({
     }
 
     // ── Panel central con borde neón ────────────────────────────────────────
-    var panelW = 520, panelH = 480;
+    var panelW = 900, panelH = 680;
     var px = (W - panelW) / 2, py = (H - panelH) / 2;
 
     var panel = this.add.graphics();
@@ -55,18 +55,18 @@ var MenuScene = new Phaser.Class({
     glow.fillRoundedRect(px + 2, py + 2, panelW - 4, panelH - 4, 16);
 
     // ── Título ──────────────────────────────────────────────────────────────
-    var title = this.add.text(W / 2, py + 62, 'TYPE QUEST', {
-      fontFamily: '"Courier New", Courier, monospace',
-      fontSize: '52px',
-      fontStyle: 'bold',
+    var title = this.add.text(W / 2, py + 88, 'TYPE QUEST', {
+      fontFamily: 'Orbitron, sans-serif',
+      fontSize: '74px',
+      fontStyle: '800',
       color: '#00f5ff',
-      stroke: '#003344',
-      strokeThickness: 4,
-      shadow: { offsetX: 0, offsetY: 0, color: '#00f5ff', blur: 18, fill: true }
+      stroke: '#09142f',
+      strokeThickness: 8,
+      shadow: { offsetX: 0, offsetY: 0, color: '#00f5ff', blur: 26, fill: true }
     }).setOrigin(0.5, 0.5);
 
     // ── Ícono del muñeco ─────────────────────────────────────────────────────
-    this._drawCharacter(this, W / 2, py + 175, 0x00ff88, 28);
+    this._drawCharacter(this, W / 2, py + 220, 0x00ff88, 42);
 
     // ── Botones de nivel ─────────────────────────────────────────────────────
     var levels = [
@@ -75,8 +75,8 @@ var MenuScene = new Phaser.Class({
       { label: '🚀  Nivel 3 — Luna',       color: 0x44aaff, glow: '#44aaff', file: 'nivel3.html' },
     ];
 
-    var btnW = 340, btnH = 52, btnX = W / 2 - btnW / 2;
-    var startY = py + 240;
+    var btnW = 520, btnH = 78, btnX = W / 2 - btnW / 2;
+    var startY = py + 320;
 
     for (var i = 0; i < levels.length; i++) {
       (function (lvl, idx) {
@@ -89,9 +89,9 @@ var MenuScene = new Phaser.Class({
         btnBg.strokeRoundedRect(btnX, by, btnW, btnH, 10);
 
         var btnText = this.add.text(W / 2, by + btnH / 2, lvl.label, {
-          fontFamily: '"Courier New", Courier, monospace',
-          fontSize: '20px',
-          fontStyle: 'bold',
+          fontFamily: 'Oxanium, sans-serif',
+          fontSize: '30px',
+          fontStyle: '700',
           color: '#ffffff',
           shadow: { offsetX: 0, offsetY: 0, color: lvl.glow, blur: 10, fill: true }
         }).setOrigin(0.5, 0.5);
@@ -133,11 +133,11 @@ var MenuScene = new Phaser.Class({
     });
 
     // ── Línea inferior ───────────────────────────────────────────────────────
-    this.add.text(W / 2, py + panelH - 22, 'Presiona un nivel para comenzar', {
-      fontFamily: '"Courier New", Courier, monospace',
-      fontSize: '12px',
-      color: '#445566',
-    }).setOrigin(0.5, 0.5);
+  this.add.text(W / 2, py + panelH - 36, 'Selecciona un nivel y prepárate para escribir como pro', {
+  fontFamily: 'Rajdhani, sans-serif',
+  fontSize: '24px',
+  color: '#9fb3d9',
+  }).setOrigin(0.5, 0.5);
   },
 
   // Dibuja un muñeco stick figure
@@ -162,10 +162,14 @@ var MenuScene = new Phaser.Class({
 // ─── Iniciar Phaser ───────────────────────────────────────────────────────────
 var config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: 1000,
+  height: 1000,
   backgroundColor: '#0a0a1a',
   parent: 'game-container',
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  },
   scene: [MenuScene]
 };
 
