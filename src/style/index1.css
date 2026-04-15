@@ -1,0 +1,44 @@
+/* ===== index1.css — Menú principal gamer ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-1: #050816;
+  --bg-2: #0b1026;
+  --cyan: #00e5ff;
+  --blue: #4cc9ff;
+  --violet: #8b5cf6;
+  --green: #00ff9d;
+  --text: #f4f7ff;
+  --soft: #9fb3d9;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top, rgba(76, 201, 255, 0.12), transparent 28%),
+    radial-gradient(circle at bottom, rgba(139, 92, 246, 0.12), transparent 30%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-2));
+  font-family: 'Oxanium', sans-serif;
+  color: var(--text);
+}
+
+#game-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: stretch;
+}
+
+canvas {
+  display: block;
+  image-rendering: auto;
+}

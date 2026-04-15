@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Type Quest – Inicio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../style/index.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Oxanium:wght@400;600;700;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /*
+      Estilos adicionales mínimos para los nuevos botones de acceso
+      Coherentes con el diseño cyberpunk existente
+    */
+
+    /* Botones de login y registro debajo del botón principal */
+    .auth-links {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .auth-link-btn {
+      background: transparent;
+      border: 1px solid rgba(34, 221, 102, 0.35);
+      border-radius: 8px;
+      padding: 7px 18px;
+      font-family: 'Share Tech Mono', 'Courier New', monospace;
+      font-size: 12px;
+      color: #22dd66;
+      cursor: pointer;
+      letter-spacing: 1px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .auth-link-btn:hover {
+      background: rgba(34, 221, 102, 0.1);
+      border-color: #22dd66;
+    }
+
+    /* Etiqueta de estado de sesión (si está logueado) */
+    .session-status {
+      text-align: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      color: #445577;
+      margin-top: 12px;
+      letter-spacing: 1px;
+    }
+
+    .session-status span {
+      color: #00f5ff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stars" id="stars"></div>
+
+  <div class="panel">
+    <h1 class="title">TYPE&nbsp;&nbsp;QUEST</h1>
+    <p class="subtitle">— Juego de Mecanografía —</p>
+
+    <div class="figure-wrap">
+      <svg width="72" height="90" viewBox="0 0 72 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="36" cy="14" r="11" stroke="#22dd66" stroke-width="2.5" fill="none"/>
+        <line x1="36" y1="25" x2="36" y2="58" stroke="#22dd66" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="36" y1="35" x2="14" y2="50" stroke="#22dd66" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="36" y1="35" x2="58" y2="50" stroke="#22dd66" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="36" y1="58" x2="18" y2="84" stroke="#22dd66" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="36" y1="58" x2="54" y2="84" stroke="#22dd66" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <p class="description">
+      Entrena tu velocidad y precisión<br/>
+      al escribir. <span>Superate por niveles</span> y<br/>
+      ¡demuestra tus habilidades!
+    </p>
+
+    <!--
+      Botón principal: redirige al login si el usuario no tiene sesión,
+      o directamente al juego si ya está logueado.
+      La lógica se maneja en index.js.
+    -->
+    <a href="#" class="btn-start" id="btn-start">
+      <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      <span class="btn-label">Iniciar Juego</span>
+    </a>
+
+    <!--
+      Muestra el estado de sesión y botones de acceso
+      Si está logueado: muestra nombre y opción de cerrar sesión
+      Si no: muestra botones de login y registro
+    -->
+    <div id="auth-section">
+      <!-- Construido dinámicamente por JavaScript -->
+    </div>
+
+    <p class="hint">O presiona <kbd>ENTER</kbd> para comenzar</p>
+  </div>
+
+  <!-- auth.js cargado antes del script para tener acceso a sus funciones -->
+  <script src="../js/auth.js"></script>
+  <script src="../js/index.js"></script>
+
+  <script>
+    // ===================================================
+    //  Lógica de autenticación en index.html
+    //  - Lee si hay sesión activa
+    //  - Configura el botón "Iniciar Juego" según el estado
+    //  - Construye la sección de autenticación
+    // ===================================================
+
+    const btnStart    = document.getElementById('btn-start');
+    const authSection = document.getElementById('auth-section');
+
+    /**
+     * Construye la sección de autenticación debajo del botón principal
+     * Diferencia entre usuario logueado e invitado
+     */
+    function buildAuthSection() {
+      const user = getCurrentUser(); // Función de auth.js
+
+      if (user) {
+        // ── Usuario con sesión activa ──
+        authSection.innerHTML = `
+          <p class="session-status">Jugando como: <span>${user.username}</span></p>
+          <div class="auth-links">
+            <button class="auth-link-btn" id="btn-logout-index">Cerrar Sesión</button>
+          </div>
+        `;
+
+        document.getElementById('btn-logout-index').addEventListener('click', function () {
+          logoutUser(); // Limpiar sesión de localStorage
+          buildAuthSection(); // Reconstruir sección
+        });
+
+        // El botón principal va directo al juego si ya está logueado
+        btnStart.href = 'index1.html';
+
+      } else {
+        // ── Sin sesión: ofrecer opciones de acceso ──
+        authSection.innerHTML = `
+          <div class="auth-links">
+            <a href="login.html"    class="auth-link-btn">Iniciar Sesión</a>
+            <a href="register.html" class="auth-link-btn">Registrarse</a>
+          </div>
+          <p class="session-status">O juega como invitado (sin guardar progreso)</p>
+        `;
+
+        // Sin sesión, el botón principal también va al juego (modo invitado)
+        btnStart.href = 'index1.html';
+      }
+    }
+
+    // Construir al cargar
+    buildAuthSection();
+  </script>
+</body>
+</html>
