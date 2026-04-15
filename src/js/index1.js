@@ -1,4 +1,4 @@
-/* ===== js/index.js — TypeQuest Menú Principal ===== */
+/* ===== js/index.js — TypeDrowned Menú Principal ===== */
 
 // Detectar ruta base para navegar correctamente con file://
 function goTo(page) {
@@ -55,7 +55,7 @@ var MenuScene = new Phaser.Class({
     glow.fillRoundedRect(px + 2, py + 2, panelW - 4, panelH - 4, 16);
 
     // ── Título ──────────────────────────────────────────────────────────────
-    var title = this.add.text(W / 2, py + 62, 'TYPE QUEST', {
+    var title = this.add.text(W / 2, py + 62, 'TYPEDROWNED', {
       fontFamily: '"Courier New", Courier, monospace',
       fontSize: '52px',
       fontStyle: 'bold',
