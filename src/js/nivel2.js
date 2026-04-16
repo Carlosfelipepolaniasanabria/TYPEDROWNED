@@ -434,12 +434,17 @@ class LevelSelect extends Phaser.Scene {
       const btn = this.add.rectangle(x, y, cardW, cardH, bgColor).setStrokeStyle(3, strokeColor);
 
       if (isActive) {
-        btn.setInteractive({ useHandCursor: true });
-        btn.on('pointerover', () => btn.setFillStyle(hoverColor));
-        btn.on('pointerout',  () => btn.setFillStyle(bgColor));
-        btn.on('pointerdown', () => {
-          this.scene.start('PlayGame', { sublevel, word: words20_n2[i], timeLimit: isSong ? 240 : 60 });
-        });
+          btn.setInteractive({ useHandCursor: true });
+          btn.on('pointerover', () => btn.setFillStyle(0x3d9e25));
+          btn.on('pointerout',  () => btn.setFillStyle(bgColor));
+          btn.on('pointerdown', () => {
+              this.scene.start('PlayGame', { sublevel: i + 1, word: words20_n2[i] });
+          });
+      } else {
+          btn.setInteractive({ useHandCursor: true });
+          btn.on('pointerover', () => btn.setFillStyle(0x3a3a3a));
+          btn.on('pointerout',  () => btn.setFillStyle(bgColor));
+          btn.on('pointerdown', () => this.showLockedMessage(i + 1));
       }
 
       this.add.text(x, y - 16, `Sub ${sublevel}`, {
@@ -455,6 +460,43 @@ class LevelSelect extends Phaser.Scene {
         fontSize: '14px', fill: playColor, fontFamily: 'Courier New'
       }).setOrigin(0.5);
     }
+  }
+
+  showLockedMessage(sublevelNum) {
+    // Evita apilar mensajes si ya hay uno visible
+    if (this._lockMsg) return;
+
+    const W = this.scale.width;
+    const H = this.scale.height;
+
+    const bg = this.add.rectangle(W / 2, H - 90, 480, 52, 0x1a0a00)
+        .setStrokeStyle(2, 0xcc4400)
+        .setDepth(20);
+
+    const icon = this.add.text(W / 2 - 210, H - 90, '🔒', {
+        fontSize: '18px'
+    }).setOrigin(0, 0.5).setDepth(20);
+
+    const msg = this.add.text(W / 2 - 180, H - 90,
+        `Completa el subnivel ${sublevelNum - 1} primero`, {
+        fontSize: '14px', fill: '#e8a060',
+        fontFamily: 'Courier New', fontStyle: 'bold'
+    }).setOrigin(0, 0.5).setDepth(20);
+
+    this._lockMsg = [bg, icon, msg];
+
+    // Espera 2s visible, luego desvanece en 1s
+    this.tweens.add({
+        targets:    this._lockMsg,
+        alpha:      0,
+        delay:      2000,
+        duration:   1000,
+        ease:       'Sine.easeIn',
+        onComplete: () => {
+            this._lockMsg.forEach(obj => obj.destroy());
+            this._lockMsg = null;
+        }
+    });
   }
 }
 
